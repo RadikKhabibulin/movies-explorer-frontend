@@ -1,0 +1,8 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(32, 32, 32, 1);
+  min-height: 100vh;
+  font-family: Inter, Arial, sans-serif;
+}

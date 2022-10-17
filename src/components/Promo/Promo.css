@@ -1,0 +1,130 @@
+.promo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 648px;
+  background: rgba(7, 48, 66, 1);
+  padding: 74px 0px 50px;
+  box-sizing: border-box;
+}
+
+.promo__container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: 1280px;
+  height: 100%;
+  padding: 75px 70px 25px;
+  box-sizing: border-box;
+}
+
+.promo__image {
+  background-image: url(../../images/promo/planet.svg);
+  background-size: cover;
+  height: 304px;
+  min-width: 310px;
+  min-height: 304px;
+}
+
+.promo__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  max-width: 640px;
+  height: 100%;
+  color: rgba(255, 255, 255, 1);
+}
+
+.promo__title {
+  margin: 0;
+  padding: 0;
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 58px;
+}
+
+.promo__text-detailed {
+  max-width: 310px;
+  margin: 0;
+  padding: 0;
+  opacity: .5;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.promo__button-detailed {
+  width: 129px;
+  height: 36px;
+  margin-top: auto;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  background: inherit;
+  color: rgba(255, 255, 255, 1);
+  border: solid 1px rgba(255, 255, 255, .6);
+  border-radius: 3px;
+  transition: opacity .2s ease;
+}
+
+.promo__button-detailed:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+@media screen and (max-width: 868px) {
+  .promo {
+    height: 924px;
+    padding: 74px 0px 66px;
+  }
+
+  .promo__container {
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: center;
+    gap: 48px;
+    padding: 140px 30px 10px;
+  }
+
+  .promo__intro {
+    max-width: 680px;
+    align-items: center;
+  }
+
+  .promo__title {
+    text-align: center;
+    font-size: 40px;
+    line-height: 50px;
+  }
+
+  .promo__text-detailed {
+    max-width: 260px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .promo {
+    height: 710px;
+    padding: 74px 0px 20px;
+  }
+
+  .promo__container {
+    gap: 44px;
+    padding: 70px 10px 10px;
+  }
+
+  .promo__image {
+    min-width: 210px;
+    height: 206px;
+    min-height: 206px;
+  }
+
+  .promo__title {
+    letter-spacing: -0.04em;
+    font-size: 30px;
+    line-height: 38px;
+  }
+}
