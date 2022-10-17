@@ -7,9 +7,9 @@ function Promo() {
             Учебный проект студента факультета Веб‑разработки.
           </h1>
           <p className="promo__text-detailed">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
-          <button className="promo__button-detailed">Узнать больше</button>
+          <button className="promo__button-detailed" onClick={()=>{document.location='#about-project'}}>Узнать больше</button>
         </div>
-        <div className="promo__image" />
+        <div className="promo__image" title="Planet"/>
       </div>
     </section>
   );

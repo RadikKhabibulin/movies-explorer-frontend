@@ -1,4 +1,4 @@
-function AboutProject() {
+function Techs() {
   return (
     <section className="section techs">
       <div className="techs__container">
@@ -23,4 +23,4 @@ function AboutProject() {
   );
 }
 
-export default AboutProject;
+export default Techs;
