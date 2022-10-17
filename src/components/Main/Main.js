@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import AboutProject from '../AboutProject/AboutProject';
 import Promo from '../Promo/Promo';
+import Techs from '../Techs/Techs';
 
 function Main() {
 
@@ -8,6 +9,7 @@ function Main() {
     <main className="main-content">
       <Promo />
       <AboutProject />
+      <Techs />
     </main>
   );
 }
