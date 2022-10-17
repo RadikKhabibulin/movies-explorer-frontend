@@ -1,6 +1,6 @@
 function Promo() {
   return (
-    <section className="promo">
+    <section className="section promo">
       <div className="promo__container">
         <div className="promo__intro">
           <h1 className="promo__title">

@@ -1,7 +1,8 @@
 .section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  padding: 110px 70px;
-  box-sizing: border-box;
 }
 
 .section__title {
@@ -15,17 +16,7 @@
   letter-spacing: -0.04em;
 }
 
-@media screen and (max-width: 768px) {
-  .section {
-    padding: 90px 50px;
-  }
-}
-
 @media screen and (max-width: 400px) {
-  .section {
-    padding: 70px 18px;
-  }
-
   .section__title {
     padding-bottom: 28px;
     font-size: 18px;

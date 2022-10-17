@@ -1,7 +1,12 @@
 .about {
+  background: rgba(32, 32, 32, 1);
+}
+
+.about__container {
   max-width: 1280px;
   min-height: 608px;
-  background: rgba(32, 32, 32, 1);
+  padding: 110px 70px;
+  box-sizing: border-box;
 }
 
 .about__two-columns {
@@ -68,6 +73,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .about__container {
+    padding: 90px 50px;
+  }
+
   .about__two-columns {
     padding: 70px 0 93px;
   }
@@ -87,6 +96,10 @@
 }
 
 @media screen and (max-width: 400px) {
+  .about__container {
+    padding: 70px 18px;
+  }
+
   .about__two-columns {
     flex-direction: column;
     gap: 56px;
