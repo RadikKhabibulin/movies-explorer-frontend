@@ -41,7 +41,7 @@
   border: none;
   min-width: 32px;
   min-height: 32px;
-  transition: 0.25s ease;
+  transition: .2s ease;
 }
 
 .sidebar__close:hover {

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
+import './Header.css';
 
 function Header({loggedIn, onSidebar, onHandleLogout}) {
   const navigate = useNavigate();

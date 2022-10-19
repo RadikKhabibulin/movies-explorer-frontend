@@ -13,7 +13,7 @@
 .nav__link {
   color: white;
   text-decoration: none;
-  transition: opacity 0.25s ease;
+  transition: opacity .2s ease;
 }
 
 .nav__link:hover {
@@ -30,7 +30,7 @@
 }
 
 .nav__button {
-  transition: 0.25s ease;
+  transition: .2s ease;
 }
 
 .nav__button:hover {

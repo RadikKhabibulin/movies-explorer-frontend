@@ -1,4 +1,5 @@
 import Portfolio from "../Portfolio/Portfolio";
+import './AboutMe.css';
 
 function AboutProject() {
   return (

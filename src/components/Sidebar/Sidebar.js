@@ -1,4 +1,5 @@
 import Navigation from "../Navigation/Navigation";
+import './Sidebar.css';
 
 function Sidebar({loggedIn, isOpen, onClose}) {
 
