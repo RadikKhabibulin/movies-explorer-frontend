@@ -11,11 +11,12 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
-import Login from './Login/Login';
+import Login from '../Login/Login';
+import Register from '../Register/Register';
 import './App.css';
 
 function App() {
-  const loggedIn = true;
+  const loggedIn = false;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function handleOpenSidebarButtonClick() {
@@ -56,9 +57,8 @@ function App() {
             <Profile />
           </ProtectedRoute>
         } />
-        <Route path="/signin" element={
-          <Login />
-        } />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/signup" element={<Register />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
 
