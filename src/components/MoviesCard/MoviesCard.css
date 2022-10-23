@@ -1,0 +1,124 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card__image {
+  background-size: cover;
+  background-color: rgba(34, 34, 34, 1);
+  background-position: center;
+  object-fit: cover;
+  width: 100%;
+  height: 151px;
+  transition: opacity .2s ease;
+}
+
+.card__image:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.card__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 60px;
+  border-bottom: solid 1px rgba(66, 66, 66, 1);
+  box-sizing: border-box;
+}
+
+.card__title {
+  margin: 0;
+  padding-top: 14px;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.card__button {
+  margin-top: 10px;
+  width: 24px;
+  height: 24px;
+  background: rgba(49, 49, 49, 1);
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 36px;
+  border: none;
+  transition: opacity .2s ease;
+}
+
+.card__button:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.card__button_type_like {
+  background-image: url(../../images/movies/like-disactive.svg);
+}
+
+.card__button_type_like-active {
+  background-image: url(../../images/movies/like-active.svg);
+}
+
+.card__button_type_delete {
+  opacity: 0;
+  background-image: url(../../images/movies/delete-movie.svg);
+}
+
+.card:hover .card__button_type_delete {
+  opacity: 1;
+}
+
+.card:hover .card__button_type_delete:hover {
+  opacity: .8;
+}
+
+.card__duration {
+  margin: 0;
+  padding-top: 6px;
+  color: rgba(139, 139, 139, 1);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+@media screen and (max-width: 768px){
+  .card {
+    width: 339px;
+  }
+
+  .card__image {
+    min-height: 190px;
+  }
+}
+
+@media screen and (max-width: 400px){
+  .card {
+    width: 100%;
+  }
+
+  .card__image {
+    min-height: 168px;
+  }
+
+  .card__title {
+    padding-top: 15px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .card__duration {
+    font-size: 10px;
+    line-height: 12px;
+  }
+
+  .card__button_type_delete {
+    opacity: 1;
+  }
+}

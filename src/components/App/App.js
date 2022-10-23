@@ -9,6 +9,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import Footer from '../Footer/Footer';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 import './App.css';
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
         <Route path="/saved-movies" element={
           <ProtectedRoute loggedIn={loggedIn}>
             <Header loggedIn={loggedIn} onSidebar={handleOpenSidebarButtonClick} />
-            saved-movies
+            <SavedMovies />
             <Footer />
           </ProtectedRoute>
         } />

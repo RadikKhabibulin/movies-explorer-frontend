@@ -1,9 +1,9 @@
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import './Movies.css';
+import './SavedMovies.css';
 
-function Movies() {
+function SavedMovies() {
   const isPreloaderOpen = false;
 
   return (
@@ -11,11 +11,8 @@ function Movies() {
       <SearchForm />
       {isPreloaderOpen && <Preloader />}
       <MoviesCardList />
-      <section className="more">
-        <button className="more__button">Ещё</button>
-      </section>
     </main>
   );
 }
 
-export default Movies;
+export default SavedMovies;
