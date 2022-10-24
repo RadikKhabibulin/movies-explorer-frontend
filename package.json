@@ -15,8 +15,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "deploy": "scp -r ./build/* radik@51.250.9.213:/home/radik/portfolio_frontend",
     "author": "Radik Khabibulin"
   },
   "eslintConfig": {

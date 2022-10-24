@@ -16,7 +16,7 @@ import Register from '../Register/Register';
 import './App.css';
 
 function App() {
-  const loggedIn = false;
+  const loggedIn = true;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function handleOpenSidebarButtonClick() {

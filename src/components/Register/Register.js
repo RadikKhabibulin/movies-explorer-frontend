@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import Input from '../Input/Input';
 import '../Login/Login.css';
-import './Register.css';
 
 function Register() {
 
