@@ -1,0 +1,60 @@
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.filter:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.filter__invisible-checkbox {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.filter__invisible-checkbox:checked + .filter__visible-checkbox {
+  background: rgba(43, 224, 128, 1);
+}
+
+.filter__invisible-checkbox:checked + .filter__visible-checkbox .filter__visible-checkbox-trigger {
+  background: rgba(255, 255, 255, 1);
+  left: 50%;
+}
+
+.filter__visible-checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  background: rgba(52, 52, 52, 1);
+  border-radius: 20px;
+  min-width: 36px;
+  height: 20px;
+}
+
+.filter__visible-checkbox-trigger {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: rgba(160, 160, 160, 1);
+  border-radius: 20px;
+  min-width: 16px;
+  height: 16px;
+  transition: left .2s ease;
+}
+
+@media screen and (max-width: 768px) {
+  .filter {
+    gap: 15px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .filter-checkbox {
+    gap: 13px;
+  }
+}

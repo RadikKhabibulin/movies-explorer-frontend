@@ -1,0 +1,130 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding: 70px 0 70px;
+  box-sizing: border-box;
+}
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 396px;
+  height: 100%;
+  max-height: 560px;
+}
+
+.login__logo {
+  width: 38px;
+  height: 38px;
+  min-height: 38px;
+  background-image: url('../../images/header/logo.svg');
+  background-size: cover;
+}
+
+.login__title {
+  margin: 40px 0;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.login__error {
+  color: rgba(255, 0, 76, 1);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  margin-top: auto;
+  margin-bottom: 20px;
+}
+
+.login__submit {
+  /* margin-top: auto; */
+  width: 100%;
+  height: 45px;
+  color: rgba(255, 255, 255, 1);
+  background: rgba(66, 133, 244, 1);
+  border: none;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  transition: opacity .2s ease;
+}
+
+.login__submit:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.login__link-container {
+  display: flex;
+  gap: 6px;
+  align-self: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 16px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.login__question {
+  color: rgba(139, 139, 139, 1);
+}
+
+.login__link {
+  text-decoration: none;
+  color: rgba(66, 133, 244, 1);
+  transition: opacity 0.2s ease;
+}
+
+.login__link:hover {
+  opacity: .8;
+}
+
+@media screen and (max-width: 768px) {
+  .login {
+    padding: 232px 30px 40px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .login {
+    padding: 56px 30px 30px;
+  }
+
+  .login__container {
+    align-items: center;
+    max-height: 694px;
+  }
+
+  .login__title {
+    margin: 50px 0 80px;
+    text-align: center;
+  }
+
+  .login__submit {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .login__link-container {
+    margin-top: 14px;
+    gap: 7px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
