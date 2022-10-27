@@ -1,11 +1,10 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { cards } from '../../constants';
 import './MoviesCardList.css';
 
-function moviesCardList() {
+function moviesCardList({movies}) {
   return (
     <ul className="moviesCardList">
-      {cards.map((card) => (
+      {movies.map((card) => (
         <MoviesCard
           key={card.id}
           card={card}

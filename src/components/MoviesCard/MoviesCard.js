@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { BeatfilmMoviesApiUrl } from '../../constants';
+import { BeatfilmMoviesApiUrl } from '../../utils/constants';
 import './MoviesCard.css';
 
 function MoviesCard({ card, onCardClick, onCardLike, onCardDelete }) {

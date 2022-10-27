@@ -1,4 +1,44 @@
-export const BeatfilmMoviesApiUrl = 'https://api.nomoreparties.co/';
+export const BeatfilmMoviesApiUrl = 'https://api.nomoreparties.co';
+export const MainApiUrl = 'https://api.portfolio.nomorepartiesxyz.ru';
+
+export class Api {
+  constructor({ baseUrl, headers, credentials }) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
+    this._credentials = credentials;
+  }
+
+  _getData(url) {
+    return fetch(url, {
+      method: 'GET',
+      headers: this._headers,
+      credentials: this._credentials,
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json()
+      }
+
+      return Promise.reject(res.status);
+    });
+  }
+
+  _sendData(url, method, data) {
+    return fetch(url, {
+      method: method,
+      headers: this._headers,
+      credentials: this._credentials,
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(res.status);
+    });
+  }
+}
 
 export const cards = [
   {

@@ -8,6 +8,14 @@
   box-sizing: border-box;
 }
 
+.movies__error {
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .more {
   display: flex;
   flex-direction: column;
