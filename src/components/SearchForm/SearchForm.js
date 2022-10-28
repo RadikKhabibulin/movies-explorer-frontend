@@ -2,27 +2,30 @@ import { useState } from 'react';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import './SearchForm.css';
 
-function SearchForm({ onHandleSearchClick}) {
-  const [searchFilter, setSearchFilter] = useState(
-    localStorage.getItem('searchFilter') ? localStorage.getItem('searchFilter') : ''
-  );
-  const [isCheckboxEnabled, setIsCheckboxEnabled] = useState(
-    localStorage.getItem('isCheckboxEnabled') === 'true' ? true : false
-  );
+function SearchForm(props) {
+  const [value, setValue] = useState(props.searchFilter);
 
   function handleToggleCheckbox() {
-    setIsCheckboxEnabled(!isCheckboxEnabled);
+    props.setIsCheckboxEnabled(!props.isCheckboxEnabled);
   }
 
   function handleChange(e) {
-    setSearchFilter(e.target.value);
+    setValue(e.target.value);
+
+    if (e.target.value === '') {
+      setTimeout(() => {
+        if (e.target.value === '' && props.searchFilter !== '') {
+          props.setSearchFilter(e.target.value);
+          props.onHandleSearchClick();
+        }
+      }, 1000);
+    }
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    localStorage.setItem('searchFilter', searchFilter);
-    localStorage.setItem('isCheckboxEnabled', isCheckboxEnabled);
-    onHandleSearchClick();
+    props.setSearchFilter(value);
+    props.onHandleSearchClick();
   }
 
   return (
@@ -31,7 +34,7 @@ function SearchForm({ onHandleSearchClick}) {
         <form className="search__form" onSubmit={handleSubmit}>
           <div className="search__image" />
           <input
-            value={searchFilter}
+            value={value}
             onChange={handleChange}
             type="text"
             className="search__input"
@@ -42,7 +45,7 @@ function SearchForm({ onHandleSearchClick}) {
         </form>
         <div className="search__filter">
           <FilterCheckbox
-            isCheckboxEnabled={isCheckboxEnabled}
+            isCheckboxEnabled={props.isCheckboxEnabled}
             onHandleToggleCheckbox={handleToggleCheckbox}
           />
         </div>

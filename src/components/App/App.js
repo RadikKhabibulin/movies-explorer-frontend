@@ -29,6 +29,8 @@ function App() {
   const [responseSucces, setResponseSucces] = useState('');
 
   const [isPreloaderOpen, setIsPreloaderOpen] = useState(true);
+  const [searchFilter, setSearchFilter] = useState('');
+  const [isCheckboxEnabled, setIsCheckboxEnabled] = useState(false);
   const [movies, setMovies] = useState([]);
   const [isMoviesLoaded, setIsMoviesLoaded] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
@@ -55,10 +57,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    handleSearchClick();
-  }, []);
-
-  useEffect(() => {
     if (!isMoviesLoaded || !isSavedMoviesLoaded) {
       return;
     }
@@ -74,48 +72,25 @@ function App() {
     setIsPreloaderOpen(false);
   }, [isMoviesLoaded, isSavedMoviesLoaded]);
 
-  function checkTextIncludes(nameEN, nameRU, filter) {
-    return (
-      nameEN.toLowerCase().includes(filter.toLowerCase()) ||
-      nameRU.toLowerCase().includes(filter.toLowerCase())
-    );
-  }
 
   function handleSearchClick() {
+    if (!loggedIn) {
+      return;
+    }
+
     setIsPreloaderOpen(true);
     setIsMoviesLoaded(false);
     setIsSavedMoviesLoaded(false);
 
-    const isCheckboxEnabled = (
-      localStorage.getItem('isCheckboxEnabled') === 'true' ? true : false
-    );
-    const searchFilter = (
-      localStorage.getItem('searchFilter') ? localStorage.getItem('searchFilter') : ''
-    );
-
     moviesApi.getMovies()
     .then((movies) => {
-      const newArray = movies.filter(function (movie) {
-        return (
-          checkTextIncludes(movie.nameEN, movie.nameRU, searchFilter) &&
-          (isCheckboxEnabled ? movie.duration <= 40 : true)
-        );
-      });
-
-      setMovies(newArray);
+      setMovies(movies);
       setIsMoviesLoaded(true);
     });
 
     mainApi.getMovies()
-    .then((movies) => {
-      const newArray = movies.data.filter(function (movie) {
-        return (
-          checkTextIncludes(movie.nameEN, movie.nameRU, searchFilter) &&
-          (isCheckboxEnabled ? movie.duration <= 40 : true)
-        );
-      });
-
-      setSavedMovies(newArray);
+    .then((savedMovies) => {
+      setSavedMovies(savedMovies.data);
       setIsSavedMoviesLoaded(true);
     });
   }
@@ -232,10 +207,10 @@ function App() {
                 movies={movies}
                 isPreloaderOpen={isPreloaderOpen}
                 onHandleSearchClick={handleSearchClick}
-                // isCheckboxEnabled={isCheckboxEnabled}
-                // setIsCheckboxEnabled={setIsCheckboxEnabled}
-                // searchFilter={searchFilter}
-                // setSearchFilter={setSearchFilter}
+                isCheckboxEnabled={isCheckboxEnabled}
+                setIsCheckboxEnabled={setIsCheckboxEnabled}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
               />
               <Footer />
             </ProtectedRoute>
