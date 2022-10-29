@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 
+import { filterMovies, getColumnsCount } from '../../utils/constants';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import './Movies.css';
 
 function Movies(props) {
-  const movies = props.movies;
-  const isCheckboxEnabled = props.isCheckboxEnabled;
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [visibleMovies, setVisibleMovies] = useState([]);
+  const [firstRenderCount, setFirstRenderCount] = useState(0);
+  const [countToBeAdded, setCountToBeAdded] = useState(0);
 
   useEffect(() => {
-    if (movies.length !== 0) {
+    if (props.movies.length !== 0) {
       return;
     }
 
@@ -19,19 +21,53 @@ function Movies(props) {
   }, []);
 
   useEffect(() => {
-    const newArray = movies.filter((movie) => {
-      return filterMovies(movie, props.searchFilter, isCheckboxEnabled);
+    const newArray = props.movies.filter((movie) => {
+      return filterMovies(movie, props.searchFilter, props.isCheckboxEnabled);
     });
 
     setFilteredMovies(newArray);
-  }, [movies, isCheckboxEnabled]);
+  }, [props.movies, props.isCheckboxEnabled]);
 
-  function filterMovies(movie, filter, isShrot) {
-    return (
-      (movie.nameEN.toLowerCase().includes(filter.toLowerCase()) ||
-      movie.nameRU.toLowerCase().includes(filter.toLowerCase())) &&
-      (isShrot ? movie.duration <= 40 : true)
-    );
+  useEffect(() => {
+    handleResize();
+
+    let resizeTimeout;
+    window.onresize = (() => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(handleResize, 200);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (visibleMovies.length > firstRenderCount) {
+      setVisibleMovies(filteredMovies.slice(0, visibleMovies.length));
+    }
+    else {
+      setVisibleMovies(filteredMovies.slice(0, firstRenderCount));
+    }
+
+  }, [firstRenderCount, filteredMovies]);
+
+  function handleResize() {
+    const columnCount = getColumnsCount();
+
+    setCountToBeAdded(columnCount === 1 ? 5 : columnCount);
+    setFirstRenderCount(columnCount === 1 ? 5 : columnCount * 3);
+  }
+
+  function handleMoreClick() {
+    const remainder = visibleMovies.length % countToBeAdded;
+
+    if (remainder) {
+      setVisibleMovies(
+        filteredMovies.slice(0, (visibleMovies.length + (countToBeAdded * 2  - remainder)))
+      );
+    }
+    else {
+      setVisibleMovies(
+        filteredMovies.slice(0, (visibleMovies.length + countToBeAdded))
+      );
+    }
   }
 
   return (
@@ -50,15 +86,15 @@ function Movies(props) {
           <p className="movies__error">
             Во время запроса произошла ошибка.
             Возможно, проблема с соединением или сервер недоступен.
-            Подождите немного и попробуйте ещё раз
+            Подождите немного и попробуйте ещё раз.
           </p> :
           (
-            filteredMovies.length === 0 ?
+            visibleMovies.length === 0 ?
             <p className="movies__error">Ничего не найдено</p> :
             <>
-              <MoviesCardList movies={filteredMovies}/>
-              <section className="more">
-                <button className="more__button">Ещё</button>
+              <MoviesCardList movies={visibleMovies} onHandleMovieLike={props.onHandleMovieLike}/>
+              <section className={`more ${filteredMovies.length > visibleMovies.length ? '' : 'more_hidden'}`}>
+                <button className="more__button" onClick={handleMoreClick}>Ещё</button>
               </section>
             </>
           )

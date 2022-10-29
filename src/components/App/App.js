@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
+import { prepareMovieParams } from '../../utils/constants';
 import { CurrentUserContext, defaultUser } from '../../contexts/CurrentUserContext';
 
 import Main from '../Main/Main';
@@ -71,7 +72,6 @@ function App() {
 
     setIsPreloaderOpen(false);
   }, [isMoviesLoaded, isSavedMoviesLoaded]);
-
 
   function handleSearchClick() {
     if (!loggedIn) {
@@ -189,6 +189,55 @@ function App() {
     });
   }
 
+  function handleMovieLike(movie) {
+    if (movie.isLiked) {
+      movie.isLiked = false;
+      const deletedMovieId = savedMovies.find(m => m.movieId === movie.id)._id;
+
+      mainApi.deleteMovie(deletedMovieId)
+      .then((deletedMovie) => {
+        setMovies((state) => state.map(m => m.id === movie.id ? movie : m));
+        setSavedMovies(savedMovies.filter(m => m._id !== deletedMovie.data._id));
+      })
+      .catch(err => {
+        console.log(`Ошибка удаления фильма из списка сохраненных: ${err}`);
+      })
+    }
+    else {
+      const newMovieParams = prepareMovieParams(movie);
+      if (!newMovieParams) {
+        console.log('Ошибка добавления фильма в сохраненные. Попробуйте перезагрузить страницу.');
+        return;
+      }
+
+      mainApi.createMovie(newMovieParams)
+      .then((createdMovie) => {
+        movie.isLiked = true;
+        setMovies((state) => state.map(m => m.id === movie.id ? movie : m));
+        setSavedMovies([createdMovie, ...savedMovies]);
+      })
+      .catch(err => {
+        console.log(`Ошибка добавления фильма в список сохраненных: ${err}`);
+      })
+    }
+  }
+
+  function handleDeleteMovie(movieId) {
+    mainApi.deleteMovie(movieId)
+    .then((deletedMovie) => {
+      const foundMovie = movies.find(m => m.id === deletedMovie.data.movieId);
+
+      if (foundMovie) {
+        foundMovie.isLiked = false;
+      }
+      setMovies(movies);
+      setSavedMovies(savedMovies.filter(m => m._id !== deletedMovie.data._id));
+    })
+    .catch(err => {
+      console.log(`Ошибка удаления фильма из списка сохраненных: ${err}`);
+    })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -211,6 +260,7 @@ function App() {
                 setIsCheckboxEnabled={setIsCheckboxEnabled}
                 searchFilter={searchFilter}
                 setSearchFilter={setSearchFilter}
+                onHandleMovieLike={handleMovieLike}
               />
               <Footer />
             </ProtectedRoute>
@@ -218,7 +268,17 @@ function App() {
           <Route path="/saved-movies" element={
             <ProtectedRoute loggedIn={loggedIn}>
               <Header loggedIn={loggedIn} onSidebar={handleOpenSidebarButtonClick} />
-              <SavedMovies />
+              <SavedMovies
+                moviesLength={movies.length}
+                savedMovies={savedMovies}
+                isPreloaderOpen={isPreloaderOpen}
+                onHandleSearchClick={handleSearchClick}
+                isCheckboxEnabled={isCheckboxEnabled}
+                setIsCheckboxEnabled={setIsCheckboxEnabled}
+                searchFilter={searchFilter}
+                setSearchFilter={setSearchFilter}
+                onHandleDeleteMovie={handleDeleteMovie}
+              />
               <Footer />
             </ProtectedRoute>
           } />

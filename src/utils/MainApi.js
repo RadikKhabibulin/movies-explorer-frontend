@@ -27,33 +27,13 @@ class MainApi extends Api {
     return this._getData(`${this._baseUrl}/movies`);
   }
 
-  // updateUserAvatar(data) {
-  //     return this._sendData(`${this._baseUrl}/users/me/avatar`, 'PATCH', data)
-  // }
+  createMovie(params) {
+    return this._sendData(`${this._baseUrl}/movies`, 'POST', params);
+  }
 
-  // getCards() {
-  //     return this._getData(`${this._baseUrl}/cards`);
-  // }
-
-  // setLike(cardId) {
-  //     return this._sendData(`${this._baseUrl}/cards/${cardId}/likes`, 'PUT', {});
-  // }
-
-  // deleteLike(cardId) {
-  //     return this._sendData(`${this._baseUrl}/cards/${cardId}/likes`, 'DELETE', {});
-  // }
-
-  // changeLikeCardStatus(cardId, setLike) {
-  //     return setLike ? this.setLike(cardId) : this.deleteLike(cardId);
-  // }
-
-  // createCard({ name, link }) {
-  //     return this._sendData(`${this._baseUrl}/cards`, 'POST', { name, link });
-  // }
-
-  // deleteCard(cardId) {
-  //     return this._sendData(`${this._baseUrl}/cards/${cardId}`, 'DELETE', {});
-  // }
+  deleteMovie(movieId) {
+    return this._sendData(`${this._baseUrl}/movies/${movieId}`, 'DELETE', {});
+  }
 }
 
 const mainApi = new MainApi({
