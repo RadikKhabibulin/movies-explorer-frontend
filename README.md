@@ -8,6 +8,7 @@
 
 **Radik Khabibulin** - [ссылка на GitHub](https://github.com/RadikKhabibulin)
 
-### Ссылка на макет
+### Ссылки
 
-[Diploma.fig на Яндекс.Диск](https://disk.yandex.ru/d/ioe4e1tcmVWVMg)
+[Макет - Diploma.fig на Яндекс.Диск](https://disk.yandex.ru/d/ioe4e1tcmVWVMg)
+[Pull request](https://github.com/RadikKhabibulin/movies-explorer-frontend/pull/2)
