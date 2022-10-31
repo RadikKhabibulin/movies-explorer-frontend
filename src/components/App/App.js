@@ -29,12 +29,14 @@ function App() {
   const [responseError, setResponseError] = useState('');
   const [responseSucces, setResponseSucces] = useState('');
 
-  const [isPreloaderOpen, setIsPreloaderOpen] = useState(true);
-  const [searchFilter, setSearchFilter] = useState('');
-  const [isCheckboxEnabled, setIsCheckboxEnabled] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [isPreloaderOpen, setIsPreloaderOpen] = useState(false);
+  const [movies, setMovies] = useState(
+    localStorage.getItem('Movies') ? JSON.parse(localStorage.getItem('Movies')) : []
+  );
+  const [savedMovies, setSavedMovies] = useState(
+    localStorage.getItem('SavedMovies') ? JSON.parse(localStorage.getItem('SavedMovies')) : []
+  );
   const [isMoviesLoaded, setIsMoviesLoaded] = useState(false);
-  const [savedMovies, setSavedMovies] = useState([]);
   const [isSavedMoviesLoaded, setIsSavedMoviesLoaded] = useState(false);
 
   const navigate = useNavigate();
@@ -70,10 +72,13 @@ function App() {
       });
     });
 
+    localStorage.setItem('Movies', JSON.stringify(movies));
+    localStorage.setItem('SavedMovies', JSON.stringify(savedMovies));
+
     setIsPreloaderOpen(false);
   }, [isMoviesLoaded, isSavedMoviesLoaded]);
 
-  function handleSearchClick() {
+  function downloadMovies() {
     if (!loggedIn) {
       return;
     }
@@ -104,15 +109,18 @@ function App() {
   }
 
   function checkToken(initial=false) {
-    mainApi.getUserInfo()
+    return mainApi.getUserInfo()
     .then(() => {
       setLoggedIn(true);
-      localStorage.setItem('loggedIn', true)
+      localStorage.setItem('loggedIn', true);
     })
     .catch(err => {
       let msg = '';
-      localStorage.removeItem('loggedIn');
+
       setLoggedIn(false);
+      setMovies([]);
+      setSavedMovies([]);
+      localStorage.clear();
 
       if (err === 400)
         msg = 'При авторизации произошла ошибка. Токен не передан или передан не в том формате';
@@ -131,10 +139,8 @@ function App() {
   function handleLogin(email, password) {
     mainApi.login(email, password)
     .then(() => {
-      checkToken();
-    })
-    .then(() => {
-      navigate('/movies');
+        checkToken()
+        .then(() => navigate('/movies'));
     })
     .catch((err) => {
       if (err === 400)
@@ -170,6 +176,9 @@ function App() {
     .catch(err => {
       if (err === 400)
         setResponseError('Некорректно заполнено одно из полей');
+      else if (err === 401) {
+        handleLogout();
+      }
       else if (err === 409)
         setResponseError('Пользователь с таким email уже существует');
       else
@@ -182,6 +191,8 @@ function App() {
     .then(() => {
       setLoggedIn(false);
       localStorage.clear();
+      setMovies([]);
+      setSavedMovies([]);
       navigate('/');
     })
     .catch((err) => {
@@ -196,10 +207,19 @@ function App() {
 
       mainApi.deleteMovie(deletedMovieId)
       .then((deletedMovie) => {
-        setMovies((state) => state.map(m => m.id === movie.id ? movie : m));
-        setSavedMovies(savedMovies.filter(m => m._id !== deletedMovie.data._id));
+        const newMovies = movies.map(m => m.id === movie.id ? movie : m);
+        const newSavedMovies = savedMovies.filter(m => m._id !== deletedMovie.data._id);
+
+        localStorage.setItem('Movies', JSON.stringify(newMovies));
+        localStorage.setItem('SavedMovies', JSON.stringify(newSavedMovies));
+
+        setMovies(newMovies)
+        setSavedMovies(newSavedMovies);
       })
-      .catch(err => {
+      .catch((err) => {
+        if (err === 401) {
+          handleLogout();
+        }
         console.log(`Ошибка удаления фильма из списка сохраненных: ${err}`);
       })
     }
@@ -213,10 +233,19 @@ function App() {
       mainApi.createMovie(newMovieParams)
       .then((createdMovie) => {
         movie.isLiked = true;
-        setMovies((state) => state.map(m => m.id === movie.id ? movie : m));
-        setSavedMovies([createdMovie, ...savedMovies]);
+        const newMovies = movies.map(m => m.id === movie.id ? movie : m);
+        const newSavedMovies = [createdMovie, ...savedMovies];
+
+        localStorage.setItem('Movies', JSON.stringify(newMovies));
+        localStorage.setItem('SavedMovies', JSON.stringify(newSavedMovies));
+
+        setMovies(newMovies);
+        setSavedMovies(newSavedMovies);
       })
       .catch(err => {
+        if (err === 401) {
+          handleLogout();
+        }
         console.log(`Ошибка добавления фильма в список сохраненных: ${err}`);
       })
     }
@@ -226,14 +255,22 @@ function App() {
     mainApi.deleteMovie(movieId)
     .then((deletedMovie) => {
       const foundMovie = movies.find(m => m.id === deletedMovie.data.movieId);
+      const newSavedMovies = savedMovies.filter(m => m._id !== deletedMovie.data._id);
 
       if (foundMovie) {
         foundMovie.isLiked = false;
       }
+
+      localStorage.setItem('Movies', JSON.stringify(movies));
+      localStorage.setItem('SavedMovies', JSON.stringify(newSavedMovies));
+
       setMovies(movies);
-      setSavedMovies(savedMovies.filter(m => m._id !== deletedMovie.data._id));
+      setSavedMovies(newSavedMovies);
     })
     .catch(err => {
+      if (err === 401) {
+        handleLogout();
+      }
       console.log(`Ошибка удаления фильма из списка сохраненных: ${err}`);
     })
   }
@@ -254,12 +291,9 @@ function App() {
               <Header loggedIn={loggedIn} onSidebar={handleOpenSidebarButtonClick} />
               <Movies
                 movies={movies}
+                setMovies={setMovies}
                 isPreloaderOpen={isPreloaderOpen}
-                onHandleSearchClick={handleSearchClick}
-                isCheckboxEnabled={isCheckboxEnabled}
-                setIsCheckboxEnabled={setIsCheckboxEnabled}
-                searchFilter={searchFilter}
-                setSearchFilter={setSearchFilter}
+                onDownloadMovies={downloadMovies}
                 onHandleMovieLike={handleMovieLike}
               />
               <Footer />
@@ -272,11 +306,7 @@ function App() {
                 moviesLength={movies.length}
                 savedMovies={savedMovies}
                 isPreloaderOpen={isPreloaderOpen}
-                onHandleSearchClick={handleSearchClick}
-                isCheckboxEnabled={isCheckboxEnabled}
-                setIsCheckboxEnabled={setIsCheckboxEnabled}
-                searchFilter={searchFilter}
-                setSearchFilter={setSearchFilter}
+                onDownloadMovies={downloadMovies}
                 onHandleDeleteMovie={handleDeleteMovie}
               />
               <Footer />

@@ -88,6 +88,17 @@
   box-sizing: border-box;
 }
 
+.search__error {
+  position: absolute;
+  width: calc(100% - 230px);
+  top: 155px;
+  left: 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 1);
+  font-size: 13px;
+  line-height: 18px;
+}
+
 @media screen and (max-width: 768px) {
   .search__container {
     margin: 80px 0 109px;
@@ -95,6 +106,10 @@
 
   .search__filter {
     padding: 10px 20px;
+  }
+
+  .search__error {
+    top: 160px;
   }
 }
 
@@ -114,6 +129,11 @@
     bottom: 45px;
     left: auto;
     border: none;
+  }
+
+  .search__error {
+    width: 100%;
+    font-size: 11px;
   }
 }
 

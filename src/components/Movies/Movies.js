@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { filterMovies, getColumnsCount } from '../../utils/constants';
+import {
+  filterMovies,
+  getColumnsCount,
+  DEFAULT_INITIAL_ROW_COUNT,
+  MOBILE_INITIAL_ROW_COUNT
+} from '../../utils/constants';
 import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -11,22 +16,31 @@ function Movies(props) {
   const [visibleMovies, setVisibleMovies] = useState([]);
   const [firstRenderCount, setFirstRenderCount] = useState(0);
   const [countToBeAdded, setCountToBeAdded] = useState(0);
+  const [searchFilter, setSearchFilter] = useState(
+    localStorage.getItem('searchFilter') ? localStorage.getItem('searchFilter') : ''
+  );
+  const [isCheckboxEnabled, setIsCheckboxEnabled] = useState(
+    localStorage.getItem('isCheckboxEnabled') === 'true' ? true : false
+  );
 
   useEffect(() => {
     if (props.movies.length !== 0) {
       return;
     }
 
-    props.onHandleSearchClick();
+    props.onDownloadMovies();
   }, []);
 
   useEffect(() => {
+    localStorage.setItem('searchFilter', searchFilter);
+    localStorage.setItem('isCheckboxEnabled', isCheckboxEnabled);
+
     const newArray = props.movies.filter((movie) => {
-      return filterMovies(movie, props.searchFilter, props.isCheckboxEnabled);
+      return filterMovies(movie, searchFilter, isCheckboxEnabled);
     });
 
     setFilteredMovies(newArray);
-  }, [props.movies, props.isCheckboxEnabled]);
+  }, [props.movies, searchFilter, isCheckboxEnabled]);
 
   useEffect(() => {
     handleResize();
@@ -51,8 +65,10 @@ function Movies(props) {
   function handleResize() {
     const columnCount = getColumnsCount();
 
-    setCountToBeAdded(columnCount === 1 ? 5 : columnCount);
-    setFirstRenderCount(columnCount === 1 ? 5 : columnCount * 3);
+    setCountToBeAdded(columnCount === 1 ? MOBILE_INITIAL_ROW_COUNT : columnCount);
+    setFirstRenderCount(
+      columnCount === 1 ? MOBILE_INITIAL_ROW_COUNT : columnCount * DEFAULT_INITIAL_ROW_COUNT
+    );
   }
 
   function handleMoreClick() {
@@ -73,11 +89,10 @@ function Movies(props) {
   return (
     <main className="movies">
       <SearchForm
-        onHandleSearchClick={props.onHandleSearchClick}
-        isCheckboxEnabled={props.isCheckboxEnabled}
-        setIsCheckboxEnabled={props.setIsCheckboxEnabled}
-        searchFilter={props.searchFilter}
-        setSearchFilter={props.setSearchFilter}
+        isCheckboxEnabled={isCheckboxEnabled}
+        setIsCheckboxEnabled={setIsCheckboxEnabled}
+        searchFilter={searchFilter}
+        setSearchFilter={setSearchFilter}
       />
       { props.isPreloaderOpen ?
         <Preloader /> :

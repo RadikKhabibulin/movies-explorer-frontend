@@ -7,6 +7,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import './SavedMovies.css';
 
 function SavedMovies(props) {
+  const [searchFilter, setSearchFilter] = useState('');
+  const [isCheckboxEnabled, setIsCheckboxEnabled] = useState(false);
   const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
@@ -14,25 +16,24 @@ function SavedMovies(props) {
       return;
     }
 
-    props.onHandleSearchClick();
+    props.onDownloadMovies();
   }, []);
 
   useEffect(() => {
     const newArray = props.savedMovies.filter((movie) => {
-      return filterMovies(movie, props.searchFilter, props.isCheckboxEnabled);
+      return filterMovies(movie, searchFilter, isCheckboxEnabled);
     });
 
     setFilteredMovies(newArray);
-  }, [props.savedMovies, props.isCheckboxEnabled, props.searchFilter]);
+  }, [props.savedMovies, isCheckboxEnabled, searchFilter]);
 
   return (
     <main className="movies">
       <SearchForm
-        onHandleSearchClick={() => {}}
-        isCheckboxEnabled={props.isCheckboxEnabled}
-        setIsCheckboxEnabled={props.setIsCheckboxEnabled}
-        searchFilter={props.searchFilter}
-        setSearchFilter={props.setSearchFilter}
+        isCheckboxEnabled={isCheckboxEnabled}
+        setIsCheckboxEnabled={setIsCheckboxEnabled}
+        searchFilter={searchFilter}
+        setSearchFilter={setSearchFilter}
       />
       { props.isPreloaderOpen ?
         <Preloader /> :

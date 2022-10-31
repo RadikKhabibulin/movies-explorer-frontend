@@ -4,6 +4,7 @@ import './SearchForm.css';
 
 function SearchForm(props) {
   const [value, setValue] = useState(props.searchFilter);
+  const [error, setError] = useState('');
 
   function handleToggleCheckbox() {
     props.setIsCheckboxEnabled(!props.isCheckboxEnabled);
@@ -11,12 +12,12 @@ function SearchForm(props) {
 
   function handleChange(e) {
     setValue(e.target.value);
+    setError('');
 
     if (e.target.value === '') {
       setTimeout(() => {
         if (e.target.value === '' && props.searchFilter !== '') {
           props.setSearchFilter(e.target.value);
-          props.onHandleSearchClick();
         }
       }, 1000);
     }
@@ -24,12 +25,22 @@ function SearchForm(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (value === '') {
+      setError('Нужно ввести ключевое слово');
+      setTimeout(() => {setError('')}, 2000);
+      return;
+    }
+
+    localStorage.setItem('searchFilter', props.searchFilter);
+    localStorage.setItem('isCheckboxEnabled', props.isCheckboxEnabled);
+
     props.setSearchFilter(value);
-    props.onHandleSearchClick();
   }
 
   return (
     <section className="search">
+      <span className="search__error">{error}</span>
       <div className="search__container">
         <form className="search__form" onSubmit={handleSubmit}>
           <div className="search__image" />
@@ -39,7 +50,6 @@ function SearchForm(props) {
             type="text"
             className="search__input"
             placeholder="Фильм"
-            required
           />
           <button type="submit" className="search__submit">Найти</button>
         </form>

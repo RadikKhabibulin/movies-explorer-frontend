@@ -1,6 +1,18 @@
 export const BeatfilmMoviesApiUrl = 'https://api.nomoreparties.co';
 export const MainApiUrl = 'https://api.portfolio.nomorepartiesxyz.ru';
 
+export const DEFAULT_INITIAL_ROW_COUNT = 4;
+export const MOBILE_INITIAL_ROW_COUNT = 5;
+
+const IS_FULL_WIDTH = 1280;
+const IS_LARGE_WIDTH = 1000;
+const IS_MIDDLE_WIDTH = 768;
+const FULL_WIDTH_COLUMN_COUNT = 4;
+const LARGE_WIDTH_COLUMN_COUNT = 3;
+const MIDDLE_WIDTH_COLUMN_COUNT = 2;
+const SMALL_WIDTH_COLUMN_COUNT = 1;
+const MAX_SHORT_MOVIE_DURATION = 40;
+
 export class Api {
   constructor({ baseUrl, headers, credentials }) {
     this._baseUrl = baseUrl;
@@ -44,28 +56,25 @@ export const filterMovies = (movie, filter, isShrot) => {
   return (
     (movie.nameEN.toLowerCase().includes(filter.toLowerCase()) ||
     movie.nameRU.toLowerCase().includes(filter.toLowerCase())) &&
-    (isShrot ? movie.duration <= 40 : true)
+    (isShrot ? movie.duration <= MAX_SHORT_MOVIE_DURATION : true)
   );
 }
 
 export const getColumnsCount = () => {
   const width = document.documentElement.clientWidth;
-  let columnCount = 0;
 
-  if (width > 1280) {
-    columnCount = 4;
+  if (width > IS_FULL_WIDTH) {
+    return FULL_WIDTH_COLUMN_COUNT;
   }
-  else if (width <= 1280 && width > 1000) {
-    columnCount = 3;
+  else if (width <= IS_FULL_WIDTH && width > IS_LARGE_WIDTH) {
+    return LARGE_WIDTH_COLUMN_COUNT;
   }
-  else if (width <= 1000 && width > 768) {
-    columnCount = 2;
+  else if (width <= IS_LARGE_WIDTH && width > IS_MIDDLE_WIDTH) {
+    return MIDDLE_WIDTH_COLUMN_COUNT;
   }
   else {
-    columnCount = 1;
+    return SMALL_WIDTH_COLUMN_COUNT;
   }
-
-  return columnCount;
 }
 
 export const prepareMovieParams = (movie) => {

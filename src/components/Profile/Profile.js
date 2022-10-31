@@ -11,6 +11,13 @@ function Profile(props) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
+    props.setResponseError('');
+    props.setResponseSucces('');
+
+    setIsButtonDisabled(checkUserInfoMatches() || !isValid);
+  }, [values]);
+
+  useEffect(() => {
     if (checkUserInfoMatches()) {
       return;
     }
@@ -21,13 +28,6 @@ function Profile(props) {
       ['profile-email']: currentUser.email,
     });
   }, [currentUser]);
-
-  useEffect(() => {
-    props.setResponseError('');
-    props.setResponseSucces('');
-
-    setIsButtonDisabled(checkUserInfoMatches() || !isValid);
-  }, [values]);
 
   function checkUserInfoMatches() {
     if (currentUser.name === values['profile-name'] &&
