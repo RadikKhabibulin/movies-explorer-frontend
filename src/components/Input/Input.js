@@ -14,6 +14,7 @@ function Input({ properties, value, errors, onHandleChange }) {
           required={properties.required}
           onChange={onHandleChange}
           value={value ? value : ""}
+          disabled={properties.disabled}
         />
       </label>
       <span className={`input__error ${properties.id}-error`}>{errors}</span>

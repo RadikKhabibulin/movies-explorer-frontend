@@ -43,6 +43,10 @@
   font-weight: 500;
 }
 
+.input__field:disabled {
+  opacity: .8;
+}
+
 .input__error {
   display: flex;
   width: 100%;

@@ -63,6 +63,7 @@ function Profile(props) {
                 required
                 value={values['profile-name']}
                 onChange={handleChange}
+                disabled={props.isItWaitingAnswer}
               />
             </label>
             <span className="profile__input-error name-input-error">{errors['profile-name']}</span>
@@ -79,6 +80,7 @@ function Profile(props) {
                 required
                 value={values['profile-email']}
                 onChange={handleChange}
+                disabled={props.isItWaitingAnswer}
               />
             </label>
             <span className="profile__input-error email-input-error">{errors['profile-email']}</span>

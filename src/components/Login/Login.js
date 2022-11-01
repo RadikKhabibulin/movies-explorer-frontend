@@ -38,7 +38,8 @@ function Login({ onHandleLogin, setResponseError, responseError, isItWaitingAnsw
             label: 'E-mail',
             minLength: 2,
             maxLength: 40,
-            required: true
+            required: true,
+            disabled: isItWaitingAnswer
           }} value={values['profile-email']} errors={errors['profile-email']} onHandleChange={handleChange} />
           <Input properties={{
             id: 'profile-password-id',
@@ -47,7 +48,8 @@ function Login({ onHandleLogin, setResponseError, responseError, isItWaitingAnsw
             label: 'Пароль',
             minLength: 8,
             maxLength: 40,
-            required: true
+            required: true,
+            disabled: isItWaitingAnswer
           }} value={values['profile-password']} errors={errors['profile-password']} onHandleChange={handleChange} />
           <p className="login__error">{responseError}</p>
           <button className="login__submit" type="submit" disabled={isItWaitingAnswer || !isValid}>Войти</button>
