@@ -30,12 +30,10 @@ function Profile(props) {
   }, [currentUser]);
 
   function checkUserInfoMatches() {
-    if (currentUser.name === values['profile-name'] &&
-        currentUser.email === values['profile-email']) {
-      return true;
-    }
-
-    return false;
+    return (
+      currentUser.name === values['profile-name'] &&
+      currentUser.email === values['profile-email']
+    );
   }
 
   function handleSubmit(e) {
@@ -90,13 +88,14 @@ function Profile(props) {
           <div className={'profile__buttons-container'}>
           <button
             className="profile__button"
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || props.isItWaitingAnswer}
           >
             Редактировать
           </button>
           <button
             className="profile__button profile__button_type_logout"
             onClick={props.onHandleLogout}
+            disabled={props.isItWaitingAnswer}
           >
             Выйти из аккаунта
           </button>

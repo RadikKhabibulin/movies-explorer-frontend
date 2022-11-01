@@ -32,9 +32,6 @@ function SearchForm(props) {
       return;
     }
 
-    localStorage.setItem('searchFilter', props.searchFilter);
-    localStorage.setItem('isCheckboxEnabled', props.isCheckboxEnabled);
-
     props.setSearchFilter(value);
   }
 

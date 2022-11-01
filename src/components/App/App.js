@@ -28,6 +28,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(defaultUser);
   const [responseError, setResponseError] = useState('');
   const [responseSucces, setResponseSucces] = useState('');
+  const [isItWaitingAnswer, setIsItWaitingAnswer] = useState(false);
 
   const [isPreloaderOpen, setIsPreloaderOpen] = useState(false);
   const [movies, setMovies] = useState(
@@ -137,10 +138,14 @@ function App() {
   };
 
   function handleLogin(email, password) {
+    setIsItWaitingAnswer(true);
+
     mainApi.login(email, password)
     .then(() => {
-        checkToken()
-        .then(() => navigate('/movies'));
+      return checkToken()
+        .then(() => {
+          navigate('/movies');
+        });
     })
     .catch((err) => {
       if (err === 400)
@@ -150,9 +155,14 @@ function App() {
       else
         setResponseError(`На сервере произошла ошибка. Код ошибки: ${err}`);
     })
+    .finally(() => {
+      setIsItWaitingAnswer(false);
+    });
   }
 
   function handleRegister(name, email, password) {
+    setIsItWaitingAnswer(true);
+
     mainApi.register(name, email, password)
     .then(() => {
       handleLogin(email, password);
@@ -164,10 +174,14 @@ function App() {
         setResponseError('Пользователь с таким email уже существует');
       else
         setResponseError('При регистрации пользователя произошла ошибка');
-    })
+
+      setIsItWaitingAnswer(false);
+    });
   }
 
   function handleUpdateUser(name, email) {
+    setIsItWaitingAnswer(true);
+
     mainApi.updateUserInfo(name, email)
     .then(newUserInfo => {
       setCurrentUser(newUserInfo.data);
@@ -184,9 +198,14 @@ function App() {
       else
         setResponseError('При обновлении профиля произошла ошибка');
     })
+    .finally(() => {
+      setIsItWaitingAnswer(false);
+    })
   }
 
   function handleLogout() {
+    setIsItWaitingAnswer(true);
+
     mainApi.logout()
     .then(() => {
       setLoggedIn(false);
@@ -197,6 +216,9 @@ function App() {
     })
     .catch((err) => {
       setResponseError(`Ошибка выхода из системы. Код ошибки: ${err}`);
+    })
+    .finally(() => {
+      setIsItWaitingAnswer(false);
     });
   }
 
@@ -322,6 +344,7 @@ function App() {
                 setResponseError={setResponseError}
                 responseSucces={responseSucces}
                 responseError={responseError}
+                isItWaitingAnswer={isItWaitingAnswer}
               />
             </ProtectedRoute>
           } />
@@ -331,6 +354,7 @@ function App() {
                 onHandleLogin={handleLogin}
                 setResponseError={setResponseError}
                 responseError={responseError}
+                isItWaitingAnswer={isItWaitingAnswer}
               />
             </ProtectedRoute>
           } />
@@ -340,6 +364,7 @@ function App() {
                 onHandleRegister={handleRegister}
                 setResponseError={setResponseError}
                 responseError={responseError}
+                isItWaitingAnswer={isItWaitingAnswer}
               />
             </ProtectedRoute>
           } />

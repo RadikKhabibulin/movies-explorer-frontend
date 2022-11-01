@@ -4,7 +4,7 @@ import { useFormWithValidation } from '../FormValidation/FormValidation';
 import Input from '../Input/Input';
 import './Login.css';
 
-function Login({ onHandleLogin, setResponseError, responseError }) {
+function Login({ onHandleLogin, setResponseError, responseError, isItWaitingAnswer }) {
   const {
     values, handleChange, errors, isValid, resetForm
   } = useFormWithValidation();
@@ -50,7 +50,7 @@ function Login({ onHandleLogin, setResponseError, responseError }) {
             required: true
           }} value={values['profile-password']} errors={errors['profile-password']} onHandleChange={handleChange} />
           <p className="login__error">{responseError}</p>
-          <button className="login__submit" type="submit" disabled={!isValid}>Войти</button>
+          <button className="login__submit" type="submit" disabled={isItWaitingAnswer || !isValid}>Войти</button>
         </form>
         <div className="login__link-container">
           <span className="login__question">Ещё не зарегистрированы?</span>
