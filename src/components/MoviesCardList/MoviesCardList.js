@@ -1,14 +1,15 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
-import { cards } from '../../constants';
 import './MoviesCardList.css';
 
-function moviesCardList() {
+function moviesCardList({ movies, onHandleMovieLike, onHandleDeleteMovie }) {
   return (
     <ul className="moviesCardList">
-      {cards.map((card) => (
+      {movies.map((card) => (
         <MoviesCard
           key={card.id}
           card={card}
+          onHandleMovieLike={onHandleMovieLike}
+          onHandleDeleteMovie={onHandleDeleteMovie}
         />
       ))}
     </ul>

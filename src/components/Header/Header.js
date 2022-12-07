@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 import './Header.css';
 
-function Header({loggedIn, onSidebar, onHandleLogout}) {
+function Header({loggedIn, onSidebar}) {
   const navigate = useNavigate();
 
   function clickSidebarHandler() {
@@ -10,7 +10,7 @@ function Header({loggedIn, onSidebar, onHandleLogout}) {
       onSidebar();
     }
     else {
-      navigate('signin');
+      navigate('/signin');
     }
   }
 

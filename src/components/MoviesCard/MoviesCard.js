@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
-import { BeatfilmMoviesApiUrl } from '../../constants';
+import { BeatfilmMoviesApiUrl } from '../../utils/constants';
 import './MoviesCard.css';
 
-function MoviesCard({ card, onCardClick, onCardLike, onCardDelete }) {
+function MoviesCard({ card, onHandleMovieLike, onHandleDeleteMovie }) {
   const location = useLocation();
 
   const cardLikeButtonClassName = (
@@ -12,20 +12,23 @@ function MoviesCard({ card, onCardClick, onCardLike, onCardDelete }) {
   const cardDurationMinutes = card.duration - cardDurationHours * 60;
 
   function handleClick() {
-    onCardClick(card);
+    window.open(card.trailerLink);
   }
 
   function handleLikeClick() {
-    onCardLike(card);
+    onHandleMovieLike(card);
   }
 
   function handleDeleteClick() {
-    onCardDelete(card);
+    onHandleDeleteMovie(card._id);
   }
 
   return (
     <li className="card">
-      <img className="card__image" src={BeatfilmMoviesApiUrl + card.image.url} alt="Место" onClick={handleClick}/>
+      <img className="card__image"
+        src={location.pathname === '/saved-movies' ? card.image : (BeatfilmMoviesApiUrl + card.image.url)}
+        alt="Место"
+        onClick={handleClick}/>
       <div className="card__body">
         <h2 className="card__title">{card.nameRU}</h2>
         {

@@ -1,8 +1,9 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
-function ProtectedRoute ({ loggedIn, children }) {
+function ProtectedRoute ({ loggedIn, navigateTo, children }) {
+  const link = (navigateTo ? navigateTo : '/');
   return (
-    loggedIn ? children : <Navigate to="/signin" />
+    loggedIn ? children : <Navigate to={link} />
   );
 };
 
